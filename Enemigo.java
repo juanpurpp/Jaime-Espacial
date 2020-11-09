@@ -10,4 +10,9 @@ public class Enemigo {
         this.ataque = ataque;
         this.pos = pos;
     }
+    public int atacar(Jugador player){
+        player.vida -= this.ataque*10;
+        System.out.println("Robot n°" + this.id + " le ha quitado" + this.ataque*10 + " de vida a jugador " +player.nombre);
+        return (this.ataque * 10);
+    }
 }

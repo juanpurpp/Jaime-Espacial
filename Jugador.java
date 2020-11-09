@@ -8,18 +8,20 @@ public class Jugador{
     public int ataques;
     public int poderes;
     public int fase;
-
-    public Jugador(String nombre, int vida, int ataques, int poderes, int fase){
+    public int pos;
+    public Jugador(String nombre, int vida, int ataques, int poderes, int fase, int pos){
         this.nombre = nombre;
         this.vida = vida;
         this.ataques = ataques;
         this.poderes = poderes;
         this.fase = fase;
+        this.pos = pos;
     }
 
-    public int atacar(){
-        int dano =  (int)(Math.random()*10);
-        System.out.println("Enemigo recibe putazo bestial de " + this.nombre + " haciendo " + dano + " de daño"); 
+    public int atacar(Enemigo enem){
+        int dano = ((int)(Math.random()*10 + 1))*10;
+        enem.vida -=  dano;
+        System.out.println("Enemigo "+ enem.id+" putazo bestial de " + this.nombre + " haciendo " +dano + " de daño"); 
         return dano;
     }
 }
