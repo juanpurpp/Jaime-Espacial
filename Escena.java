@@ -8,12 +8,15 @@ public class Escena{
     public Enemigo bot[] = new Enemigo[5];
     public int nivel;
     public boolean terminada;
+    public int enemCant;
     public Escena(Jugador player, int nivel, boolean terminada){
         this.player = player;
         this.nivel = nivel; //por ahora no lo usamos ya que solo vamos a crear 1 nivel
         this.terminada = terminada;
-        int pos[] = new int[3];
-        for(int i = 0; i < 3; i++){
+        if(this.nivel == 1) enemCant = 3;
+        else if(this.nivel == 2) enemCant = 5;
+        int pos[] = new int[enemCant];
+        for(int i = 0; i < enemCant; i++){
             switch(i){
                 case 0:
                     pos[i] = (int)((Math.random()*5));
@@ -32,7 +35,7 @@ public class Escena{
     }
     public void render(){
         if((int)(Math.random()*2) == 1) this.bot[(int)(Math.random()*3)].atacar(player);
-        char[] cuadro = new char[5];
+        char[] cuadro = new char[6];
         //escenario 1
         for(int i = 0; i < cuadro.length; i++) cuadro[i] = ' ';
         for(int i = 0; i <= 2; i++) cuadro[this.bot[i].pos] = 'H';
@@ -52,7 +55,7 @@ public class Escena{
         
         //vidas
         String vidas = "";
-        String espacio[] = new String[5];
+        String espacio[] = new String[6];
         for(int i = 0; i < espacio.length; i++) espacio[i] = "     ";
         for(int i = 0;i<3;i++){
             if(this.bot[i].vida >= 100) espacio[this.bot[i].pos] =          " " + Integer.toString(this.bot[i].vida) + " ";
@@ -76,14 +79,14 @@ public class Escena{
         System.out.println("                                "+escenario2+"               ");
         System.out.println("                                                             ");
         System.out.println("Vida: "+this.player.vida+"                                   ");
-
+        //Ver si murió
         if(player.vida <= 0 ){
             System.out.println("Has muerto :(");
             this.terminada = true;
             return;
         }
-        System.out.println("length = " + bot.length);
-        for(int i = bot.length - 1; i >= 0 && bot[0].vida <= 0; i--){
+        //Ver si ganó
+        for(int i = enemCant - 1; i >= 0 && bot[i].vida <= 0; i--){
             if(i == 0){
                 System.out.println("Has eliminado a todos los enemigos de esta fase");
                 this.terminada = true;
