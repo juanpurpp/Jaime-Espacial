@@ -10,9 +10,9 @@ public class Escena{
     public boolean terminada;
     public Escena(Jugador player, int nivel, boolean terminada){
         this.player = player;
-        int pos[] = new int[3];
         this.nivel = nivel; //por ahora no lo usamos ya que solo vamos a crear 1 nivel
         this.terminada = terminada;
+        int pos[] = new int[3];
         for(int i = 0; i < 3; i++){
             switch(i){
                 case 0:
@@ -27,7 +27,7 @@ public class Escena{
                     }while(pos[i-1] == pos[i] || pos[i-2] == pos[i]);
                 break;
             }
-            this.bot[i] = new Enemigo(i, 100, (int)(Math.random()*7+1), pos[i]);
+            this.bot[i] = new Enemigo(i, 100, (int)(Math.random()*5+1), pos[i]);
         }
     }
     public void render(){
@@ -76,6 +76,20 @@ public class Escena{
         System.out.println("                                "+escenario2+"               ");
         System.out.println("                                                             ");
         System.out.println("Vida: "+this.player.vida+"                                   ");
+
+        if(player.vida <= 0 ){
+            System.out.println("Has muerto :(");
+            this.terminada = true;
+            return;
+        }
+        System.out.println("length = " + bot.length);
+        for(int i = bot.length - 1; i >= 0 && bot[0].vida <= 0; i--){
+            if(i == 0){
+                System.out.println("Has eliminado a todos los enemigos de esta fase");
+                this.terminada = true;
+                return;
+            }
+        }
         System.out.println("COMANDOS: X-atacar("+player.ataques+") C-invisible("+player.poderes+")     A  D  MOVERSE      M-salir");
         inputTecla();
         
