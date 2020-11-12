@@ -10,10 +10,14 @@ public class Robot extends Enemigo{
             System.out.println("Bot n° "+this.id+" ha intentado atacar pero no tiene fuerzas");
             return 0;
         }
+        else if(player.ultimode == true){
+            System.out.println("Bot n°"+this.id+" ha intentado atacar, pero no puede ver a " + player.nombre + "en su estado ulti");
+            return 0;
+        }
         else{
-            int dano = (int)(Math.random()*((this.ataque*10)-10+1)) + 10;
+            int dano = (int)(Math.random()*((this.ataque*10)-20+1)) + 10;
             player.vida -= dano;
-            System.out.println("Robot n°" + this.id + " le ha quitado" + dano + " de vida a jugador " + player.nombre);
+            System.out.println("Robot n°" + this.id + " le ha quitado " + dano + " de vida a jugador " + player.nombre);
             return (dano);
         }
     }

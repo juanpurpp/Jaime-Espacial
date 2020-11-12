@@ -1,11 +1,12 @@
 package Juego;
 
-import java.lang.*; 
+import java.lang.*;
+import java.security.PublicKey;
 import java.util.Scanner;
 public class Escena{
 
     public Jugador player;
-    public Enemigo bot[] = new Enemigo[5];
+    public Robot bot[] = new Robot[5];
     public int nivel;
     public boolean terminada;
     public int enemCant;
@@ -38,11 +39,12 @@ public class Escena{
                     }while(pos[i-1] == pos[i] || pos[i-2] == pos[i] || pos[i-3] == pos[i] || pos[i-4] == pos[i]);
                 break;
             }
-            this.bot[i] = new Robot(i, 100, (int)(Math.random()*(this.nivel*4)+1), pos[i]);
+            this.bot[i] = new Robot(i, 100, (int)(Math.random()*(this.nivel*4-2+1)+2), pos[i]);
         }
     }
     public void render(){
         int cuadCant = 0;
+        if(player.puntos>=500) player.puntos = 500;
         if(this.nivel == 1) cuadCant=5;
         if(this.nivel == 2) cuadCant=7;
         char[] cuadro = new char[cuadCant];
@@ -68,8 +70,9 @@ public class Escena{
         String espacio[] = new String[6];
         for(int i = 0; i < espacio.length; i++) espacio[i] = "     ";
         for(int i = 0;i<enemCant;i++){
-            if(this.bot[i].vida >= 100) espacio[this.bot[i].pos] =          " " + Integer.toString(this.bot[i].vida) + " ";
-            else if(this.bot[i].vida >= 10) espacio[this.bot[i].pos] =      " " + Integer.toString(this.bot[i].vida) + "   ";
+            if(this.bot[i].vida <= 0) espacio[this.bot[i].pos] =  "  X  ";
+            else if(this.bot[i].vida >= 100) espacio[this.bot[i].pos] =     " " + Integer.toString(this.bot[i].vida) + " ";
+            else if(this.bot[i].vida >= 10) espacio[this.bot[i].pos] =      "  " + Integer.toString(this.bot[i].vida) + " ";
             else if(this.bot[i].vida >= 0) espacio[this.bot[i].pos] =       "  " + Integer.toString(this.bot[i].vida) + "  ";
         }
         for(int i = 0;i<espacio.length; i++) vidas = (vidas + espacio[i] );
@@ -101,9 +104,15 @@ public class Escena{
                 return;
             }
         }
-        System.out.println("COMANDOS: X-atacar("+player.ataques+") C-invisible("+player.poderes+")     A  D  MOVERSE      M-salir");
+        System.out.print(  "COMANDOS: X-atacar     A  D  MOVERSE      M-salir      ");
+        System.out.println("          C-Ulti( |%"+ (int) (((float)(player.puntos) )/500*100) +"|)      pts: "+player.puntos+"/500");
+        if(player.ultimode) {
+            System.out.println("ULTI MODE ON  --- ULTI MODE ON --- ULTI MODE ON --- ULTI MODE ON --- ULTI MODE ON");
+            System.out.println("Curación +    |     Invisibilidad (Enemigos no te ven)    |   WATE GALACTICO(daño)");
+
+        }
         inputTecla(cuadro.length,true);
-        if((int)(Math.random()*3) == 1) this.bot[(int)(Math.random()*enemCant)].atacar(player);
+        if((int)(Math.random()*3) == 1) player.puntos-= (this.bot[(int)(Math.random()*enemCant)].atacar(player))/10;
     }
     public void inputTecla(int casillas, boolean cls){
         String command;
@@ -112,18 +121,48 @@ public class Escena{
         if(cls) for(int i = 0; i<15; i++) System.out.println(" ");
         if(command.equals("a") && player.pos>0) player.pos--;
         if(command.equals("d") && player.pos<casillas-1) player.pos++;
-        if(command.equals("x")){
-            boolean pos_correct = false;
+        if(command.equals("x")) this.ataque(player, bot);
+        if(command.equals("m")){
+            this.terminada = true;
+            player.salida = true; 
+        }
+        if(command.equals("c")) player.ulti();
+    }
+    public void ataque(Jugador player, Robot bot[]){
+        boolean pos_correct = false;
             for(int i=0; i<enemCant; i++){
                 if(this.player.pos == this.bot[i].pos){
                     pos_correct = true;
-                    player.atacar(bot[i]);
+                    player.puntos += player.atacar(bot[i]);
                 }
             }
             if(!pos_correct) System.out.println("Debes estar enfrente de un enemigo");
+    }
+    public void pausa(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("¬Presiona ENTER para continuar...");
+        input.nextLine();
+
+        
+    }
+    public void dialogo(){
+        if(this.nivel == 1){
+            System.out.println("TEXTO DE PRUEBA");
+            pausa();
+            //AQUI PONE LOS DE INTRODUCCION A LA ETAPA 1
         }
-        if(command.equals("m")){
-            this.terminada = true;
-            player.salida = true;        }
+        if(this.nivel == 2){
+            System.out.println("TEXTO DE PRUEBA");
+            pausa();
+            //AQUI PONE LOS DE TERMINO ETAPA 1 E INICIO ETAPA 2
+        }
+        /*GUIA PARA FRANSO DE COMO USAR UNA PAUSA
+        BUENO MAN A VES SI APRENDES LA CONCHADETUMADRE NEDEA
+        BUENO, PARA PONERU UNA PAUSA ENTREMEDIO PONES PAUSA() DE ESTA FORMA.
+
+        System.out.println("Jefe: bueno te voy a meter toda la pija");
+        System.out.println(player.nombre + "ni lo creas puto de mierda ");
+        pausa();
+        */
     }
 }
