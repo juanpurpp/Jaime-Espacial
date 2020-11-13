@@ -79,6 +79,7 @@ public class EscenaFinal extends Escena{
         inputTecla(cuadro.length,true);
         if((int)(Math.random()*3) == 1) player.puntos-= arredondopus.atacar(player)/ 10 ;
     }
+    @Override
     public void ataque(Jugador player, Robot bot[]){       
         if(this.player.pos == arredondopus.pos){
             player.puntos += player.atacar(arredondopus);
@@ -86,6 +87,7 @@ public class EscenaFinal extends Escena{
         else System.out.println("Debes estar enfrente de arredondopus");       
     }
     //aqui también puedes usar pausa();
+    @Override
     public void dialogo(){
         System.out.println("TEXTO DE PRUEBA");
         pausa();

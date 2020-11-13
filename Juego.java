@@ -6,7 +6,7 @@ public class Juego{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
         System.out.println("Bienvenido nuevo jugador, ingrese su nombre a continuación:");
-        Jugador player = new Jugador(input.nextLine(), 100, 3, 3, 0, 0, false,0, false);
+        Jugador player = new Jugador(input.nextLine(), 100, 0, false,0, false);
         System.out.println("Se ha registrado como "+ player.nombre + ", bienvenido " + player.nombre);
 
         System.out.println("Etapa 1... Etapa 1... Etapa 1... ");

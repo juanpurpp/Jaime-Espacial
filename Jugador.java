@@ -5,19 +5,14 @@ import java.util.Random;
 public class Jugador{
     public String nombre;
     public int vida;
-    public int ataques;
     public int poderes;
-    public int fase;
     public int pos;
     public boolean salida;
     public int puntos;
     public boolean ultimode;
-    public Jugador(String nombre, int vida, int ataques, int poderes, int fase, int pos, boolean salida, int puntos, boolean ultimode){
+    public Jugador(String nombre, int vida, int pos, boolean salida, int puntos, boolean ultimode){
         this.nombre = nombre;
         this.vida = vida;
-        this.ataques = ataques;
-        this.poderes = poderes;
-        this.fase = fase;
         this.pos = pos;
         this.salida = salida;
         this.puntos = puntos;
@@ -33,7 +28,7 @@ public class Jugador{
         }
         else dano = ((int)(Math.random()*90-10+ 1)+10);
         enem.vida -=  dano;
-        System.out.println("Enemigo "+ enem.id+" recibe putazo bestial de " + this.nombre + " haciendo " +dano + " de daño"); 
+        System.out.println("Enemigo "+ enem.id+" recibe ataque de " + this.nombre + " haciendo " +dano + " de daño"); 
         return dano;
     }
     public void ulti(){
